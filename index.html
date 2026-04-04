@@ -3,231 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECCENCEE | Luxury Perfume Store</title>
+    <title>ECCENCEE | Luxury Fragrance House</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --brand-deep: #411013; /* Matches your logo background */
-            --black: #0a0a0a;
+            --brand-wine: #411013; /* The deep red from your logo */
+            --brand-gold: #c5a059; /* Sophisticated gold accent */
+            --black: #1a1a1a;
             --white: #ffffff;
-            --gray-light: #f4f4f4;
-            --text-muted: #888;
-            --transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            --off-white: #fcfaf8;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; color: var(--black); background-color: var(--white); line-height: 1.6; overflow-x: hidden; }
-        
+        body { font-family: 'Inter', sans-serif; color: var(--black); background: var(--white); line-height: 1.6; }
+
         /* Navigation */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 5%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            padding: 1.2rem 5%;
+            background: white;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-        .nav-logo img { height: 50px; width: auto; display: block; }
-        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-        .nav-links a { text-decoration: none; color: var(--black); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; transition: var(--transition); }
-        .nav-links a:hover { color: var(--brand-deep); }
+        .nav-logo img { height: 60px; width: auto; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--black); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; transition: var(--transition); }
+        .nav-links a:hover { color: var(--brand-wine); }
 
         /* Hero Section */
         .hero {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            min-height: 85vh;
+            background: var(--off-white);
             align-items: center;
-            min-height: 80vh;
-            padding: 0 5%;
-            background-color: var(--gray-light);
         }
-        .hero-content { flex: 1.2; padding-right: 5%; z-index: 2; }
-        .hero-image { flex: 1; position: relative; }
-        .hero-image img { width: 100%; height: auto; border-radius: 2px; filter: grayscale(10%); }
-        
-        .hero-content h1 { 
-            font-family: 'Playfair Display', serif; 
-            font-size: clamp(2.5rem, 6vw, 4.5rem); 
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            color: var(--brand-deep);
-        }
-        .hero-content h1 span { font-style: italic; display: block; color: var(--black); font-weight: 400; }
-        .hero-content p { max-width: 450px; margin-bottom: 2.5rem; font-size: 1.1rem; font-weight: 300; }
+        .hero-text { padding: 0 10%; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero-text h1 span { color: var(--brand-wine); font-style: italic; }
+        .hero-text p { font-size: 1.1rem; color: #555; margin-bottom: 2rem; max-width: 450px; }
+        .hero-img { height: 100%; width: 100%; object-fit: cover; }
 
-        .cta-btn {
-            background: var(--brand-deep);
-            color: var(--white);
+        .btn {
+            display: inline-block;
+            background: var(--brand-wine);
+            color: white;
             padding: 1.2rem 3rem;
             text-decoration: none;
-            display: inline-block;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
             text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
             font-weight: 700;
             transition: var(--transition);
         }
-        .cta-btn:hover { background: var(--black); transform: translateY(-2px); }
+        .btn:hover { background: var(--black); transform: translateY(-3px); }
 
-        /* Brand Logos */
-        .brand-strip {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            padding: 3rem 5%;
-            flex-wrap: wrap;
-            border-bottom: 1px solid #f0f0f0;
-            opacity: 0.6;
-        }
-        .brand-strip span { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: bold; }
-
-        /* Section Title */
-        .section-header { padding: 5rem 5% 2rem; text-align: left; }
-        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; }
-        .section-header div { width: 60px; height: 3px; background: var(--brand-deep); margin-top: 10px; }
-
-        /* Modern Product Grid */
-        .grid-container {
+        /* Product Grid */
+        .container { padding: 5rem 5%; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 3rem; text-align: center; }
+        
+        .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            padding: 0 5% 5rem;
+            gap: 2rem;
         }
-        .item {
-            background: #fff;
+        .product-card {
+            background: white;
             padding: 2rem;
             text-align: center;
+            border: 1px solid #eee;
             transition: var(--transition);
-            border: 1px solid #f0f0f0;
-            position: relative;
-            overflow: hidden;
         }
-        .item:hover { border-color: var(--brand-deep); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .item img { width: 100%; height: 320px; object-fit: contain; margin-bottom: 1.5rem; transition: var(--transition); }
-        .item:hover img { transform: scale(1.05); }
-        .item h3 { font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem; height: 40px; display: flex; align-items: center; justify-content: center; }
-        .item .price { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--brand-deep); font-size: 1.2rem; }
+        .product-card:hover { border-color: var(--brand-wine); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .product-card img { width: 100%; height: 300px; object-fit: contain; margin-bottom: 1.5rem; }
+        .product-card h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; color: #333; }
+        .product-card .price { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--brand-wine); font-size: 1.2rem; }
 
-        /* Responsive Fixes */
-        @media (max-width: 900px) {
-            .hero { flex-direction: column; padding-top: 4rem; text-align: center; }
-            .hero-content { padding-right: 0; margin-bottom: 3rem; }
+        /* Featured Banners */
+        .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 0 5%; margin-bottom: 5rem; }
+        .feature-card { height: 500px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
+        .feature-card img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: 1s; }
+        .feature-card:hover img { transform: scale(1.1); }
+        .feature-content { z-index: 2; background: rgba(0,0,0,0.3); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
+
+        footer { background: var(--brand-wine); color: white; padding: 5rem 5% 2rem; text-align: center; }
+        footer img { height: 80px; filter: brightness(0) invert(1); margin-bottom: 2rem; }
+
+        /* Animations */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out forwards; }
+        .active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero, .feature-row { grid-template-columns: 1fr; }
+            .hero-text { padding: 4rem 5%; text-align: center; }
             .nav-links { display: none; }
         }
-
-        /* Scroll Reveal */
-        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s all cubic-bezier(0.19, 1, 0.22, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-logo">
-            <img src="5925.png" alt="ECCENCEE Logo">
-        </div>
+        <div class="nav-logo"><img src="5925.png" alt="ECCENCEE"></div>
         <ul class="nav-links">
-            <li><a href="#">Collection</a></li>
-            <li><a href="#">Men</a></li>
-            <li><a href="#">Women</a></li>
-            <li><a href="#">Bespoke</a></li>
+            <li><a href="#collection">Collection</a></li>
+            <li><a href="#">Best Sellers</a></li>
+            <li><a href="#">New Arrivals</a></li>
+            <li><a href="#">About</a></li>
         </ul>
-        <div class="nav-links">
-            <a href="#">Cart (0)</a>
-        </div>
+        <a href="#" style="text-decoration:none; color:black">Bag (0)</a>
     </nav>
 
     <header class="hero">
-        <div class="hero-content">
-            <h1>Smell is a word <span>Perfume is Literature</span></h1>
-            <p>Curating the world's most evocative scents. Our collection is a library of emotions, waiting to be worn.</p>
-            <a href="#collection" class="cta-btn">Explore Collection</a>
+        <div class="hero-text">
+            <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 0.7rem; color: var(--brand-wine); font-weight: 700;">The Art of Olfaction</p>
+            <h1>Smell is a word. <span>Perfume is Literature.</span></h1>
+            <p>Explore a curated library of the world’s most exquisite fragrances. From the bold spice of the East to the fresh florals of the West.</p>
+            <a href="#collection" class="btn">Shop the Library</a>
         </div>
-        <div class="hero-image">
-            <img src="9099.jpg" alt="Featured Editorial">
-        </div>
+        <img src="9099.jpg" alt="ECCENCEE Campaign" class="hero-img">
     </header>
 
-    <div class="brand-strip">
-        <span>TOM FORD</span>
-        <span>YSL</span>
-        <span>DIOR</span>
-        <span>CREED</span>
-        <span>VALENTINO</span>
-        <span>JPG</span>
-    </div>
-
-    <section id="collection">
-        <div class="section-header reveal">
-            <h2>The Signature Collection</h2>
-            <div></div>
-        </div>
-
-        <div class="grid-container reveal">
-            <div class="item">
-                <img src="9106.jpg" alt="Creed Aventus">
+    <section class="container" id="collection">
+        <h2 class="section-title">The Master Collection</h2>
+        <div class="product-grid">
+            <div class="product-card fade-in">
+                <img src="9106.jpg" alt="Aventus">
                 <h3>Creed Aventus</h3>
                 <p class="price">$325.00</p>
             </div>
-            <div class="item">
-                <img src="9105.jpg" alt="Tom Ford Ombre Leather">
+            <div class="product-card fade-in">
+                <img src="9105.jpg" alt="Ombre Leather">
                 <h3>Tom Ford Ombré Leather</h3>
                 <p class="price">$155.00</p>
             </div>
-            <div class="item">
-                <img src="9104.jpg" alt="LV Imagination">
-                <h3>Louis Vuitton Imagination</h3>
+            <div class="product-card fade-in">
+                <img src="9104.jpg" alt="Imagination">
+                <h3>LV Imagination</h3>
                 <p class="price">$285.00</p>
             </div>
-            <div class="item">
-                <img src="9108.jpg" alt="LV Pacific Chill">
-                <h3>Louis Vuitton Pacific Chill</h3>
+            <div class="product-card fade-in">
+                <img src="9108.jpg" alt="Pacific Chill">
+                <h3>LV Pacific Chill</h3>
                 <p class="price">$285.00</p>
             </div>
-            <div class="item">
+            <div class="product-card fade-in">
                 <img src="9110.jpg" alt="YSL Y">
                 <h3>YSL Y Eau de Parfum</h3>
                 <p class="price">$120.00</p>
             </div>
-            <div class="item">
+            <div class="product-card fade-in">
                 <img src="9109.jpg" alt="JPG Le Beau">
                 <h3>JPG Le Beau Paradise Garden</h3>
                 <p class="price">$115.00</p>
             </div>
-            <div class="item">
-                <img src="9101.jpg" alt="Parfums de Marly">
-                <h3>Parfums de Marly Althair</h3>
+            <div class="product-card fade-in">
+                <img src="9101.jpg" alt="Althair">
+                <h3>PDM Althaïr</h3>
                 <p class="price">$250.00</p>
             </div>
-            <div class="item">
-                <img src="9103.jpg" alt="Rasasi Hawas">
+            <div class="product-card fade-in">
+                <img src="9103.jpg" alt="Hawas">
                 <h3>Rasasi Hawas Ice</h3>
                 <p class="price">$65.00</p>
+            </div>
+            <div class="product-card fade-in">
+                <img src="9046.jpg" alt="Spicebomb">
+                <h3>V&R Spicebomb Extreme</h3>
+                <p class="price">$110.00</p>
+            </div>
+            <div class="product-card fade-in">
+                <img src="9047.jpg" alt="MYSLF">
+                <h3>YSL MYSLF</h3>
+                <p class="price">$125.00</p>
             </div>
         </div>
     </section>
 
-    <footer style="background: var(--brand-deep); color: white; padding: 4rem 5%; text-align: center;">
-        <img src="5925.png" alt="Logo" style="height: 60px; filter: brightness(0) invert(1); margin-bottom: 2rem;">
-        <p style="opacity: 0.7; letter-spacing: 1px; font-size: 0.8rem;">&copy; 2026 ECCENCEE LUXURY PERFUME STORE | EGYPT</p>
+    <section class="feature-row">
+        <div class="feature-card">
+            <img src="9050.jpg" alt="Sauvage">
+            <div class="feature-content">
+                <h2>Sauvage</h2>
+                <p>The Raw & Noble</p>
+                <a href="#" class="btn" style="background: white; color: black; margin-top: 1rem;">View Dior</a>
+            </div>
+        </div>
+        <div class="feature-card">
+            <img src="9111.jpg" alt="New Arrival">
+            <div class="feature-content">
+                <h2>New Arrivals</h2>
+                <p>The Latest from Paris</p>
+                <a href="#" class="btn" style="background: white; color: black; margin-top: 1rem;">Explore New</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <img src="5925.png" alt="ECCENCEE">
+        <p style="max-width: 600px; margin: 0 auto 2rem; opacity: 0.8;">Premium fragrances curated for those who understand that a scent is more than a smell—it's an identity.</p>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; font-size: 0.7rem; letter-spacing: 1px;">
+            &copy; 2026 ECCENCEE LUXURY FRAGRANCE HOUSE. ALL RIGHTS RESERVED.
+        </div>
     </footer>
 
     <script>
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) {
-                    reveals[i].classList.add("active");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
-            }
-        }
-        window.addEventListener("scroll", reveal);
-        reveal(); // Initial check
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
