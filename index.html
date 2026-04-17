@@ -12,131 +12,193 @@
         body { background-color: var(--deep-burgundy); color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
         .luxury-font { font-family: 'Cormorant Garamond', serif; }
         
-        /* ANIMATIONS */
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        .reveal { animation: slideUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        /* VIDEO SHUFFLER ENGINE */
+        .video-wrapper { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; opacity: 0.45; }
+        .hero-vid { position: absolute; width: 100%; height: 100%; object-fit: cover; transition: opacity 2s ease; opacity: 0; }
+        .hero-vid.active { opacity: 1; }
 
-        .page-section { display: none; min-height: 100vh; }
-        .active-section { display: block; }
+        .page-section { display: none; min-height: 100vh; position: relative; }
+        .active-section { display: block; animation: fadeIn 1.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* OVERLAY SENSE: CLICK OUTSIDE TO CLOSE */
+        .overlay-bg { background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); }
+        
         .glass-card {
             background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.7s ease;
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
             cursor: pointer;
         }
-        .glass-card:hover { transform: translateY(-10px); border-color: var(--rose-gold); background: rgba(255, 255, 255, 0.06); }
+        .glass-card:hover { border-color: var(--rose-gold); transform: translateY(-8px); background: rgba(255,255,255,0.05); }
 
-        .btn-luxury {
-            border: 1px solid var(--rose-gold); color: var(--rose-gold);
-            text-transform: uppercase; letter-spacing: 4px; font-size: 10px; transition: 0.4s;
-        }
-        .btn-luxury:hover { background: var(--rose-gold); color: black; }
-
-        .price-old { text-decoration: line-through; opacity: 0.4; font-size: 0.8em; margin-left: 8px; color: #ff9d9d; }
-        .variant-btn { border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; font-size: 9px; transition: 0.3s; }
-        .variant-btn.active { border-color: var(--rose-gold); color: var(--rose-gold); }
-
-        #product-modal.hidden { display: none; }
+        .quiz-option { border: 1px solid rgba(255,255,255,0.1); padding: 18px; cursor: pointer; transition: 0.3s; text-align: center; text-transform: uppercase; font-size: 10px; letter-spacing: 3px; }
+        .quiz-option:hover { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(229,176,163,0.05); }
+        
+        .presence-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 10px #4ade80; }
     </style>
 </head>
 <body>
 
     <nav class="fixed w-full z-[100] border-b border-white/5 px-8 py-6 flex justify-between items-center bg-[#1a0101]/90 backdrop-blur-xl">
-        <h1 class="luxury-font text-3xl tracking-[0.5em] cursor-pointer hover:text-rose-gold transition-colors duration-500" onclick="navTo('home')">ECCENCE</h1>
-        
+        <h1 class="luxury-font text-3xl tracking-[0.5em] cursor-pointer" onclick="navTo('home')">ECCENCE</h1>
         <div class="flex items-center gap-8">
-            <a href="#" onclick="navTo('vault')" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100">The Vault</a>
-            <div class="relative cursor-pointer text-rose-gold" onclick="toggleCart()">
-                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+            <button onclick="openQuiz()" class="text-[9px] border border-rose-gold/30 px-5 py-2 uppercase tracking-[0.3em] hover:bg-rose-gold hover:text-black transition">Find Scent</button>
+            <div class="relative cursor-pointer text-rose-gold" onclick="toggleCart(event)">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
                 <span id="cart-badge" class="absolute -top-3 -right-3 bg-white text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
             </div>
         </div>
     </nav>
 
-    <section id="home-section" class="page-section active-section relative flex items-center justify-center">
-        <img src="download (4).jpg" class="absolute inset-0 w-full h-full object-cover opacity-40">
-        <div class="relative z-10 text-center space-y-8">
-            <h2 class="luxury-font text-8xl md:text-9xl italic reveal">The Specialist</h2>
-            <button onclick="navTo('vault')" class="px-12 py-5 border border-rose-gold/50 text-rose-gold uppercase tracking-[0.5em] text-[10px] hover:bg-rose-gold hover:text-black transition-all duration-700">Explore Vault</button>
+    <section id="home-section" class="page-section active-section flex items-center justify-center">
+        <div class="video-wrapper" id="vid-shuffler">
+            <video src="Diorhomevid.mp4" class="hero-vid active" autoplay muted loop></video>
+            <video src="CocoChanelvid.mp4" class="hero-vid" autoplay muted loop></video>
+        </div>
+        
+        <div class="relative z-10 text-center space-y-8 px-6">
+            <div class="text-[9px] uppercase tracking-[0.5em] opacity-60 reveal">
+                <span class="presence-dot"></span> <span id="presence-count">18</span> Specialists Active
+            </div>
+            <h2 class="luxury-font text-7xl md:text-9xl italic leading-tight reveal" style="animation-delay: 0.2s">Presence Is <br> Everything</h2>
+            <div class="reveal" style="animation-delay: 0.4s">
+                <button onclick="navTo('vault')" class="px-14 py-6 border border-rose-gold text-rose-gold uppercase tracking-[0.6em] text-[10px] hover:bg-rose-gold hover:text-black transition-all duration-1000">
+                    Open The Vault
+                </button>
+            </div>
         </div>
     </section>
 
     <section id="vault-section" class="page-section pt-40 pb-20 px-8">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <h2 class="luxury-font text-6xl italic">The Collection</h2>
-            <div class="flex gap-6 text-[9px] uppercase tracking-widest opacity-40">
-                <button onclick="filterG('All')">All</button>
-                <button onclick="filterG('Men')">Men</button>
-                <button onclick="filterG('Women')">Women</button>
+        <div class="mb-16">
+            <h2 class="luxury-font text-7xl italic">The Archive</h2>
+            <div class="flex gap-8 mt-6 text-[9px] uppercase tracking-widest opacity-40">
+                <button onclick="filterG('All')" class="hover:text-rose-gold">All</button>
+                <button onclick="filterG('Men')" class="hover:text-rose-gold">Men</button>
+                <button onclick="filterG('Women')" class="hover:text-rose-gold">Women</button>
             </div>
         </div>
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-4 gap-6"></div>
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-4 gap-8"></div>
     </section>
 
-    <div id="product-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-lg" onclick="closeModal()"></div>
-        <div id="modal-card" class="relative w-full max-w-4xl bg-[#0d0101] border border-white/10 p-10 flex flex-col md:flex-row gap-10 opacity-0 scale-95 transition-all">
-            <div class="w-full md:w-1/2 bg-white/5 p-8 flex items-center justify-center">
-                <img id="modal-img" src="" class="max-h-80 object-contain drop-shadow-2xl">
+    <div id="quiz-modal" class="fixed inset-0 z-[500] hidden flex items-center justify-center overlay-bg p-6" onclick="closeQuiz()">
+        <div class="max-w-xl w-full space-y-12" onclick="event.stopPropagation()">
+            <div class="text-center">
+                <p id="quiz-step-text" class="text-rose-gold text-[9px] tracking-[0.5em] uppercase mb-4">Step 1</p>
+                <h3 id="quiz-q" class="luxury-font text-5xl italic">Define your aura?</h3>
             </div>
-            <div class="w-full md:w-1/2 space-y-6">
-                <h3 id="modal-name" class="luxury-font text-4xl italic"></h3>
-                <div class="flex items-baseline">
-                    <span id="modal-price" class="text-2xl text-rose-gold"></span>
-                    <span id="modal-old" class="price-old"></span>
-                </div>
-                <div id="modal-variants-section" class="space-y-4">
-                    <p class="text-[8px] uppercase tracking-widest opacity-30">Selection</p>
-                    <div id="modal-variants" class="flex gap-3"></div>
-                </div>
-                <div class="flex items-center justify-between border border-white/10 p-3">
-                    <button onclick="updateQty(-1)">-</button>
-                    <span id="modal-qty">1</span>
-                    <button onclick="updateQty(1)">+</button>
-                </div>
-                <button onclick="confirmAdd()" class="btn-luxury w-full py-5 font-bold">Add to Cart</button>
-            </div>
+            <div id="quiz-options" class="grid grid-cols-1 gap-4"></div>
         </div>
     </div>
 
-    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-80 bg-black z-[400] translate-x-full transition-transform p-8 flex flex-col border-l border-white/10">
-        <h4 class="luxury-font text-2xl mb-10">Your Bag</h4>
-        <div id="cart-items" class="flex-grow overflow-y-auto space-y-6"></div>
-        <div class="pt-6 border-t border-white/10">
-            <div class="flex justify-between text-sm mb-4"><span>Total</span><span id="cart-total">0 EGP</span></div>
-            <button class="w-full py-4 bg-white text-black font-bold uppercase text-[10px]">Checkout</button>
+    <div id="p-modal" class="fixed inset-0 z-[400] hidden flex items-center justify-center overlay-bg p-6" onclick="this.classList.add('hidden')">
+        <div class="bg-[#0d0101] border border-white/10 p-10 max-w-5xl w-full flex flex-col md:flex-row gap-12" onclick="event.stopPropagation()">
+            <div class="w-full md:w-1/2 bg-white/5 p-8 flex items-center justify-center">
+                <img id="m-img" src="" class="max-h-[400px] object-contain drop-shadow-2xl">
+            </div>
+            <div class="w-full md:w-1/2 space-y-8">
+                <div>
+                    <h3 id="m-name" class="luxury-font text-5xl italic mb-4"></h3>
+                    <div class="flex items-baseline gap-4">
+                        <span id="m-price" class="text-3xl text-rose-gold"></span>
+                        <span id="m-old" class="text-lg opacity-30 line-through"></span>
+                    </div>
+                </div>
+                <div id="m-variants-section" class="space-y-4">
+                    <p class="text-[8px] uppercase tracking-widest opacity-30">Selection</p>
+                    <div id="m-variants" class="flex gap-3"></div>
+                </div>
+                <button onclick="confirmAdd()" class="w-full py-6 bg-white text-black uppercase text-[11px] tracking-widest font-bold hover:bg-rose-gold transition">Acquire Asset</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // VIDEO SHUFFLER ENGINE
+        let vIndex = 0;
+        const vids = document.querySelectorAll('.hero-vid');
+        setInterval(() => {
+            vids[vIndex].classList.remove('active');
+            vIndex = (vIndex + 1) % vids.length;
+            vids[vIndex].classList.add('active');
+        }, 6000);
+
+        // PRESENCE COUNTER
+        setInterval(() => {
+            const el = document.getElementById('presence-count');
+            let val = parseInt(el.innerText);
+            el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
+        }, 4000);
+
+        // INVENTORY (Prices set to your 700-1200 EGP + YSL Rules)
         const inventory = [
-            // YSL SPECIALS (Specific Prices)
-            { id: 1, name: "YSL MYSLF", gender: "Men", file: "MYSLF Le Parfum - Men's Spicy Vanilla Fragrance - YSL Beauty.jpg", variants: [{s: "60ml", p: 1000, o: 1400}, {s: "100ml", p: 1400, o: 1900}] },
-            { id: 2, name: "YSL Y EDP", gender: "Men", file: "Ysl.JPG", variants: [{s: "100ml", p: 1200, o: 1650}, {s: "200ml", p: 2100, o: 2800}] },
-            
-            // Standard Range (700-1200 EGP)
-            { id: 3, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 850, old: 1100 },
-            { id: 4, name: "Dark Verse", gender: "Women", file: "Luna Caine ✩ Dark Verse.webp", price: 1150, old: 1600 },
-            { id: 5, name: "ADG Profondo", gender: "Men", file: "aqua di gio.jpg", price: 1180, old: 1600 },
-            { id: 6, name: "Khamrah", gender: "Women", file: "lattffchoclete.webp", price: 890, old: 1200 },
-            { id: 7, name: "Lattafa Bourbon", gender: "Men", file: "Lattafa Asad Bourbon Mens Perfume.jpg", price: 920, old: 1200 },
-            { id: 8, name: "His Confession", gender: "Men", file: "Lattafa His Confession for Men Eau de Parfum Spray, 3_4 Ounce _ 100 Ml.jpg", price: 780, old: 1050 },
-            { id: 9, name: "Born In Roma", gender: "Women", file: "valnteino born in rome intense wommen.jpg", price: 1200, old: 1700 },
-            { id: 10, name: "JPG Divine", gender: "Women", file: "jpgwommen.webp", price: 1100, old: 1550 },
-            
-            // Ultra Niche
-            { id: 11, name: "LV Imagination", gender: "Men", file: "LouisVuittonimagination.JPG", price: 4500, old: 5500 },
-            { id: 12, name: "LV Pacific Chill", gender: "Men", file: "LouisVuittonPacificchill.JPG", price: 4500, old: 5500 },
-            { id: 13, name: "Creed Aventus", gender: "Men", file: "Creedaventos.JPG", price: 6500, old: 8000 },
-            { id: 14, name: "PDM Althair", gender: "Men", file: "Pdmalthiar.JPG", price: 4200, old: 5200 },
-            { id: 15, name: "Babycat", gender: "Men", file: "Yves Saint Laurent Babycat Eau de Parfum _ Nordstrom.jpg", price: 5200, old: 6500 }
+            { id: 1, name: "YSL MYSLF", gender: "Men", file: "MYSLF Le Parfum - Men's Spicy Vanilla Fragrance - YSL Beauty.jpg", variants: [{s:"60ml", p:1000, o:1400},{s:"100ml", p:1400, o:1900}] },
+            { id: 2, name: "YSL Y EDP", gender: "Men", file: "Ysl.JPG", variants: [{s:"100ml", p:1200, o:1650},{s:"200ml", p:2100, o:2800}] },
+            { id: 3, name: "Dior Sauvage", gender: "Men", file: "download (4).jpg", price: 1150, old: 1600 },
+            { id: 4, name: "Dark Verse", gender: "Women", file: "Luna Caine ✩ Dark Verse.webp", price: 1180, old: 1600 },
+            { id: 5, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 850, old: 1100 },
+            { id: 6, name: "LV Imagination", gender: "Men", file: "LouisVuittonimagination.JPG", price: 4800, old: 5800 },
+            { id: 7, name: "Born In Roma", gender: "Women", file: "valnteino born in rome intense wommen.jpg", price: 1200, old: 1750 },
+            { id: 8, name: "Cookie Crave", gender: "Women", file: "Lattafa Give Me Gourmand Cookie Crave Eau de Parfum Unisexe 75 ml.jpg", price: 720, old: 1000 }
         ];
 
-        let cart = [];
+        // RENDER
+        function renderProducts(list) {
+            document.getElementById('product-grid').innerHTML = list.map(p => `
+                <div class="glass-card p-10 flex flex-col items-center text-center reveal" onclick="openP(${p.id})">
+                    <img src="${p.file}" class="h-56 object-contain mb-8 transition-transform duration-700 hover:scale-110">
+                    <h4 class="luxury-font text-2xl italic">${p.name}</h4>
+                    <p class="text-rose-gold text-sm mt-3">${p.variants ? p.variants[0].p : p.price} EGP</p>
+                </div>
+            `).join('');
+        }
+
         let currP = null;
         let currV = null;
+        function openP(id) {
+            currP = inventory.find(x => x.id === id);
+            currV = currP.variants ? currP.variants[0] : {s:'Std', p:currP.price, o:currP.old};
+            document.getElementById('m-img').src = currP.file;
+            document.getElementById('m-name').innerText = currP.name;
+            updateUI();
+            
+            const vSection = document.getElementById('m-variants');
+            if(currP.variants) {
+                document.getElementById('m-variants-section').style.display='block';
+                vSection.innerHTML = currP.variants.map(v => `<button onclick="setV('${v.s}',${v.p},${v.o},this)" class="variant-btn ${v.s===currV.s?'active':''} border border-white/10 px-4 py-2 text-[10px]">${v.s}</button>`).join('');
+            } else { document.getElementById('m-variants-section').style.display='none'; }
+            
+            document.getElementById('p-modal').classList.remove('hidden');
+        }
+
+        function setV(s,p,o,btn) {
+            currV = {s,p,o};
+            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('text-rose-gold'));
+            btn.classList.add('text-rose-gold');
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('m-price').innerText = currV.p + " EGP";
+            document.getElementById('m-old').innerText = currV.o + " EGP";
+        }
+
+        // QUIZ LOGIC
+        const quiz = [
+            { q: "Choose your mood", options: ["Cold & Fresh", "Warm & Spicy", "Sweet & Floral"] },
+            { q: "Occasion?", options: ["Late Night", "Professional", "Daily Grind"] }
+        ];
+        function openQuiz() { document.getElementById('quiz-modal').classList.remove('hidden'); showQ(0); }
+        function closeQuiz() { document.getElementById('quiz-modal').classList.add('hidden'); }
+        function showQ(step) {
+            document.getElementById('quiz-q').innerText = quiz[step].q;
+            document.getElementById('quiz-step-text').innerText = `Step ${step + 1}`;
+            document.getElementById('quiz-options').innerHTML = quiz[step].options.map(o => 
+                `<div class="quiz-option" onclick="${step===1 ? 'finishQuiz()' : 'showQ(1)'}">${o}</div>`
+            ).join('');
+        }
+        function finishQuiz() { closeQuiz(); navTo('vault'); }
 
         function navTo(s) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-section'));
@@ -144,81 +206,18 @@
             window.scrollTo(0,0);
         }
 
-        function renderProducts(list) {
-            document.getElementById('product-grid').innerHTML = list.map(p => `
-                <div class="glass-card p-8 flex flex-col items-center text-center reveal" onclick="openModal(${p.id})">
-                    <img src="${p.file}" class="h-48 object-contain mb-6 drop-shadow-xl">
-                    <h4 class="luxury-font text-xl italic">${p.name}</h4>
-                    <p class="text-rose-gold text-sm mt-2">${p.variants ? p.variants[0].p : p.price} EGP</p>
-                </div>
-            `).join('');
-        }
-
-        function openModal(id) {
-            currP = inventory.find(x => x.id === id);
-            currV = currP.variants ? currP.variants[0] : {s: 'Standard', p: currP.price, o: currP.old};
-            document.getElementById('modal-img').src = currP.file;
-            document.getElementById('modal-name').innerText = currP.name;
-            updateModalUI();
-            
-            const vDiv = document.getElementById('modal-variants');
-            if(currP.variants) {
-                document.getElementById('modal-variants-section').style.display = 'block';
-                vDiv.innerHTML = currP.variants.map(v => `<button onclick="setV('${v.s}',${v.p},${v.o},this)" class="variant-btn ${v.s===currV.s?'active':''}">${v.s}</button>`).join('');
-            } else { document.getElementById('modal-variants-section').style.display = 'none'; }
-            
-            document.getElementById('product-modal').classList.remove('hidden');
-            setTimeout(() => document.getElementById('modal-card').classList.add('opacity-100', 'scale-100'), 10);
-        }
-
-        function setV(s,p,o,btn) {
-            currV = {s,p,o};
-            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            updateModalUI();
-        }
-
-        function updateModalUI() {
-            document.getElementById('modal-price').innerText = currV.p + " EGP";
-            document.getElementById('modal-old').innerText = currV.o + " EGP";
-        }
-
-        function closeModal() {
-            document.getElementById('modal-card').classList.remove('opacity-100', 'scale-100');
-            setTimeout(() => document.getElementById('product-modal').classList.add('hidden'), 400);
-            document.getElementById('modal-qty').innerText = "1";
-        }
-
-        function updateQty(d) {
-            const el = document.getElementById('modal-qty');
-            el.innerText = Math.max(1, parseInt(el.innerText) + d);
-        }
-
+        let cart = [];
         function confirmAdd() {
-            const qty = parseInt(document.getElementById('modal-qty').innerText);
-            for(let i=0; i<qty; i++) cart.push({name: currP.name, size: currV.s, price: currV.p, img: currP.file});
-            updateCart(); closeModal(); toggleCart();
-        }
-
-        function updateCart() {
+            cart.push({...currP, price: currV.p});
             document.getElementById('cart-badge').innerText = cart.length;
-            document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
-                <div class="flex gap-4 items-center border-b border-white/5 pb-4">
-                    <img src="${item.img}" class="w-12 h-12 object-contain">
-                    <div class="flex-grow"><p class="text-[10px]">${item.name} (${item.size})</p><p class="text-rose-gold text-[10px]">${item.price} EGP</p></div>
-                    <button onclick="cart.splice(${i},1);updateCart();" class="opacity-20"><i data-lucide="trash"></i></button>
-                </div>
-            `).join('');
-            document.getElementById('cart-total').innerText = cart.reduce((a,b)=>a+b.price,0) + " EGP";
-            lucide.createIcons();
+            document.getElementById('p-modal').classList.add('hidden');
         }
 
-        function toggleCart() { document.getElementById('cart-drawer').classList.toggle('translate-x-full'); }
-        function filterG(g) { renderProducts(g==='All'?inventory:inventory.filter(x=>x.gender===g)); }
+        function filterG(g) { renderProducts(g === 'All' ? inventory : inventory.filter(p => p.gender === g)); }
 
         renderProducts(inventory);
         lucide.createIcons();
     </script>
 </body>
-</html>
+    </html>
 
