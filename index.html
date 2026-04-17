@@ -3,115 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECCENCEE | Master Collection</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <title>ECCENCE | High-Value Fragrance Specialist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@100;300;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            /* This is the exact color from your Logo.png to make it invisible */
-            --brand-bg: #2b090b; 
-            --white: #ffffff;
-            --off-white: #f9f9f9;
+        :root { --rose-gold: #e5b0a3; --deep-burgundy: #1a0101; }
+        body { background-color: var(--deep-burgundy); color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        .luxury-font { font-family: 'Cormorant Garamond', serif; }
+        
+        /* ANIMATIONS */
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { animation: slideUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+        .page-section { display: none; min-height: 100vh; }
+        .active-section { display: block; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.7s ease;
+            cursor: pointer;
         }
+        .glass-card:hover { transform: translateY(-10px); border-color: var(--rose-gold); background: rgba(255, 255, 255, 0.06); }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--white); color: #1a1a1a; }
-
-        /* Navigation: Blended with Logo */
-        nav {
-            background-color: var(--brand-bg);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        .btn-luxury {
+            border: 1px solid var(--rose-gold); color: var(--rose-gold);
+            text-transform: uppercase; letter-spacing: 4px; font-size: 10px; transition: 0.4s;
         }
-        .nav-logo img { height: 70px; width: auto; display: block; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { text-decoration: none; color: var(--white); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; opacity: 0.8; }
+        .btn-luxury:hover { background: var(--rose-gold); color: black; }
 
-        /* Hero Section */
-        .hero {
-            display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh; background: var(--off-white); align-items: center; padding: 2rem 5%; gap: 2rem;
-        }
-        .hero-content h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--brand-bg); line-height: 1.1; margin-bottom: 1rem; }
-        .hero-image img { width: 100%; height: auto; border-radius: 4px; box-shadow: 15px 15px 0px var(--brand-bg); }
+        .price-old { text-decoration: line-through; opacity: 0.4; font-size: 0.8em; margin-left: 8px; color: #ff9d9d; }
+        .variant-btn { border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; font-size: 9px; transition: 0.3s; }
+        .variant-btn.active { border-color: var(--rose-gold); color: var(--rose-gold); }
 
-        .btn {
-            background: var(--brand-bg); color: white; padding: 1rem 2.5rem;
-            text-decoration: none; display: inline-block; text-transform: uppercase;
-            letter-spacing: 2px; font-weight: 700; margin-top: 1rem;
-        }
-
-        /* Product Grid */
-        .section-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 2.5rem; margin: 4rem 0 2rem; color: var(--brand-bg); }
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem; padding: 0 5% 5rem;
-        }
-        .card { border: 1px solid #eee; padding: 1.5rem; text-align: center; transition: 0.4s; background: white; }
-        .card:hover { border-color: var(--brand-bg); transform: translateY(-5px); }
-        .card img { width: 100%; height: 300px; object-fit: contain; margin-bottom: 1.5rem; }
-        .card h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
-        .card .price { color: var(--brand-bg); font-weight: 700; font-size: 1.2rem; }
-
-        footer { background: var(--brand-bg); color: var(--white); text-align: center; padding: 4rem 5%; }
-        footer img { height: 80px; margin-bottom: 1.5rem; }
-
-        @media (max-width: 768px) {
-            .hero { grid-template-columns: 1fr; text-align: center; }
-            .nav-links { display: none; }
-        }
+        #product-modal.hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="nav-logo"><img src="Logo.png" alt="ECCENCEE"></div>
-        <ul class="nav-links">
-            <li><a href="#collection">Collection</a></li>
-            <li><a href="#">About</a></li>
-        </ul>
+    <nav class="fixed w-full z-[100] border-b border-white/5 px-8 py-6 flex justify-between items-center bg-[#1a0101]/90 backdrop-blur-xl">
+        <h1 class="luxury-font text-3xl tracking-[0.5em] cursor-pointer hover:text-rose-gold transition-colors duration-500" onclick="navTo('home')">ECCENCE</h1>
+        
+        <div class="flex items-center gap-8">
+            <a href="#" onclick="navTo('vault')" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100">The Vault</a>
+            <div class="relative cursor-pointer text-rose-gold" onclick="toggleCart()">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                <span id="cart-badge" class="absolute -top-3 -right-3 bg-white text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            </div>
+        </div>
     </nav>
 
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Smell is a word. <br>Perfume is Literature.</h1>
-            <p>Discover our curated collection of world-class fragrances.</p>
-            <a href="#collection" class="btn">Shop Now</a>
+    <section id="home-section" class="page-section active-section relative flex items-center justify-center">
+        <img src="download (4).jpg" class="absolute inset-0 w-full h-full object-cover opacity-40">
+        <div class="relative z-10 text-center space-y-8">
+            <h2 class="luxury-font text-8xl md:text-9xl italic reveal">The Specialist</h2>
+            <button onclick="navTo('vault')" class="px-12 py-5 border border-rose-gold/50 text-rose-gold uppercase tracking-[0.5em] text-[10px] hover:bg-rose-gold hover:text-black transition-all duration-700">Explore Vault</button>
         </div>
-        <div class="hero-image">
-            <img src="Landscape.jpg" alt="ECCENCEE Collection">
-        </div>
-    </header>
+    </section>
 
-    <h2 class="section-title" id="collection">Master Collection</h2>
-    
-    <div class="grid">
-        <div class="card"><img src="Creedaventos.JPG"><h3>Creed Aventus</h3><p class="price">$325</p></div>
-        <div class="card"><img src="Diorhome.JPG"><h3>Dior Homme</h3><p class="price">$145</p></div>
-        <div class="card"><img src="Hawasice.JPG"><h3>Rasasi Hawas Ice</h3><p class="price">$65</p></div>
-        <div class="card"><img src="Jpglabue.JPG"><h3>JPG Le Beau</h3><p class="price">$115</p></div>
-        <div class="card"><img src="Jpgultramale.jpg"><h3>JPG Ultra Male</h3><p class="price">$110</p></div>
-        <div class="card"><img src="LouisVuittonPacificchill.JPG"><h3>LV Pacific Chill</h3><p class="price">$285</p></div>
-        <div class="card"><img src="LouisVuittonimagination.JPG"><h3>LV Imagination</h3><p class="price">$285</p></div>
-        <div class="card"><img src="Myselflaperfume.jpg"><h3>YSL MYSLF Le Parfum</h3><p class="price">$135</p></div>
-        <div class="card"><img src="Pdmalthiar.JPG"><h3>PDM Althaïr</h3><p class="price">$250</p></div>
-        <div class="card"><img src="Pdmblack.JPG"><h3>PDM Herod</h3><p class="price">$250</p></div>
-        <div class="card"><img src="Spicebombextrem.jpg"><h3>Spicebomb Extreme</h3><p class="price">$110</p></div>
-        <div class="card"><img src="Tomfordlether.JPG"><h3>TF Ombré Leather</h3><p class="price">$155</p></div>
-        <div class="card"><img src="Valntinoborninroma.jpg"><h3>Valentino Born in Roma</h3><p class="price">$115</p></div>
-        <div class="card"><img src="Versace.jpg"><h3>Versace Eros</h3><p class="price">$105</p></div>
-        <div class="card"><img src="Ysl.JPG"><h3>YSL Y EDP</h3><p class="price">$120</p></div>
-        <div class="card"><img src="Yslmyselfedp.jpg"><h3>YSL MYSLF EDP</h3><p class="price">$125</p></div>
-        <div class="card"><img src="Yslyblack.JPG"><h3>YSL Y Le Parfum</h3><p class="price">$145</p></div>
+    <section id="vault-section" class="page-section pt-40 pb-20 px-8">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <h2 class="luxury-font text-6xl italic">The Collection</h2>
+            <div class="flex gap-6 text-[9px] uppercase tracking-widest opacity-40">
+                <button onclick="filterG('All')">All</button>
+                <button onclick="filterG('Men')">Men</button>
+                <button onclick="filterG('Women')">Women</button>
+            </div>
+        </div>
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-4 gap-6"></div>
+    </section>
+
+    <div id="product-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-lg" onclick="closeModal()"></div>
+        <div id="modal-card" class="relative w-full max-w-4xl bg-[#0d0101] border border-white/10 p-10 flex flex-col md:flex-row gap-10 opacity-0 scale-95 transition-all">
+            <div class="w-full md:w-1/2 bg-white/5 p-8 flex items-center justify-center">
+                <img id="modal-img" src="" class="max-h-80 object-contain drop-shadow-2xl">
+            </div>
+            <div class="w-full md:w-1/2 space-y-6">
+                <h3 id="modal-name" class="luxury-font text-4xl italic"></h3>
+                <div class="flex items-baseline">
+                    <span id="modal-price" class="text-2xl text-rose-gold"></span>
+                    <span id="modal-old" class="price-old"></span>
+                </div>
+                <div id="modal-variants-section" class="space-y-4">
+                    <p class="text-[8px] uppercase tracking-widest opacity-30">Selection</p>
+                    <div id="modal-variants" class="flex gap-3"></div>
+                </div>
+                <div class="flex items-center justify-between border border-white/10 p-3">
+                    <button onclick="updateQty(-1)">-</button>
+                    <span id="modal-qty">1</span>
+                    <button onclick="updateQty(1)">+</button>
+                </div>
+                <button onclick="confirmAdd()" class="btn-luxury w-full py-5 font-bold">Add to Cart</button>
+            </div>
+        </div>
     </div>
 
-    <footer>
-        <img src="Logo.png" alt="ECCENCEE">
-        <p>&copy; 2026 ECCENCEE LUXURY FRAGRANCE HOUSE</p>
-    </footer>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-80 bg-black z-[400] translate-x-full transition-transform p-8 flex flex-col border-l border-white/10">
+        <h4 class="luxury-font text-2xl mb-10">Your Bag</h4>
+        <div id="cart-items" class="flex-grow overflow-y-auto space-y-6"></div>
+        <div class="pt-6 border-t border-white/10">
+            <div class="flex justify-between text-sm mb-4"><span>Total</span><span id="cart-total">0 EGP</span></div>
+            <button class="w-full py-4 bg-white text-black font-bold uppercase text-[10px]">Checkout</button>
+        </div>
+    </div>
 
+    <script>
+        const inventory = [
+            // YSL SPECIALS (Specific Prices)
+            { id: 1, name: "YSL MYSLF", gender: "Men", file: "MYSLF Le Parfum - Men's Spicy Vanilla Fragrance - YSL Beauty.jpg", variants: [{s: "60ml", p: 1000, o: 1400}, {s: "100ml", p: 1400, o: 1900}] },
+            { id: 2, name: "YSL Y EDP", gender: "Men", file: "Ysl.JPG", variants: [{s: "100ml", p: 1200, o: 1650}, {s: "200ml", p: 2100, o: 2800}] },
+            
+            // Standard Range (700-1200 EGP)
+            { id: 3, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 850, old: 1100 },
+            { id: 4, name: "Dark Verse", gender: "Women", file: "Luna Caine ✩ Dark Verse.webp", price: 1150, old: 1600 },
+            { id: 5, name: "ADG Profondo", gender: "Men", file: "aqua di gio.jpg", price: 1180, old: 1600 },
+            { id: 6, name: "Khamrah", gender: "Women", file: "lattffchoclete.webp", price: 890, old: 1200 },
+            { id: 7, name: "Lattafa Bourbon", gender: "Men", file: "Lattafa Asad Bourbon Mens Perfume.jpg", price: 920, old: 1200 },
+            { id: 8, name: "His Confession", gender: "Men", file: "Lattafa His Confession for Men Eau de Parfum Spray, 3_4 Ounce _ 100 Ml.jpg", price: 780, old: 1050 },
+            { id: 9, name: "Born In Roma", gender: "Women", file: "valnteino born in rome intense wommen.jpg", price: 1200, old: 1700 },
+            { id: 10, name: "JPG Divine", gender: "Women", file: "jpgwommen.webp", price: 1100, old: 1550 },
+            
+            // Ultra Niche
+            { id: 11, name: "LV Imagination", gender: "Men", file: "LouisVuittonimagination.JPG", price: 4500, old: 5500 },
+            { id: 12, name: "LV Pacific Chill", gender: "Men", file: "LouisVuittonPacificchill.JPG", price: 4500, old: 5500 },
+            { id: 13, name: "Creed Aventus", gender: "Men", file: "Creedaventos.JPG", price: 6500, old: 8000 },
+            { id: 14, name: "PDM Althair", gender: "Men", file: "Pdmalthiar.JPG", price: 4200, old: 5200 },
+            { id: 15, name: "Babycat", gender: "Men", file: "Yves Saint Laurent Babycat Eau de Parfum _ Nordstrom.jpg", price: 5200, old: 6500 }
+        ];
+
+        let cart = [];
+        let currP = null;
+        let currV = null;
+
+        function navTo(s) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-section'));
+            document.getElementById(s + '-section').classList.add('active-section');
+            window.scrollTo(0,0);
+        }
+
+        function renderProducts(list) {
+            document.getElementById('product-grid').innerHTML = list.map(p => `
+                <div class="glass-card p-8 flex flex-col items-center text-center reveal" onclick="openModal(${p.id})">
+                    <img src="${p.file}" class="h-48 object-contain mb-6 drop-shadow-xl">
+                    <h4 class="luxury-font text-xl italic">${p.name}</h4>
+                    <p class="text-rose-gold text-sm mt-2">${p.variants ? p.variants[0].p : p.price} EGP</p>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            currP = inventory.find(x => x.id === id);
+            currV = currP.variants ? currP.variants[0] : {s: 'Standard', p: currP.price, o: currP.old};
+            document.getElementById('modal-img').src = currP.file;
+            document.getElementById('modal-name').innerText = currP.name;
+            updateModalUI();
+            
+            const vDiv = document.getElementById('modal-variants');
+            if(currP.variants) {
+                document.getElementById('modal-variants-section').style.display = 'block';
+                vDiv.innerHTML = currP.variants.map(v => `<button onclick="setV('${v.s}',${v.p},${v.o},this)" class="variant-btn ${v.s===currV.s?'active':''}">${v.s}</button>`).join('');
+            } else { document.getElementById('modal-variants-section').style.display = 'none'; }
+            
+            document.getElementById('product-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('modal-card').classList.add('opacity-100', 'scale-100'), 10);
+        }
+
+        function setV(s,p,o,btn) {
+            currV = {s,p,o};
+            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateModalUI();
+        }
+
+        function updateModalUI() {
+            document.getElementById('modal-price').innerText = currV.p + " EGP";
+            document.getElementById('modal-old').innerText = currV.o + " EGP";
+        }
+
+        function closeModal() {
+            document.getElementById('modal-card').classList.remove('opacity-100', 'scale-100');
+            setTimeout(() => document.getElementById('product-modal').classList.add('hidden'), 400);
+            document.getElementById('modal-qty').innerText = "1";
+        }
+
+        function updateQty(d) {
+            const el = document.getElementById('modal-qty');
+            el.innerText = Math.max(1, parseInt(el.innerText) + d);
+        }
+
+        function confirmAdd() {
+            const qty = parseInt(document.getElementById('modal-qty').innerText);
+            for(let i=0; i<qty; i++) cart.push({name: currP.name, size: currV.s, price: currV.p, img: currP.file});
+            updateCart(); closeModal(); toggleCart();
+        }
+
+        function updateCart() {
+            document.getElementById('cart-badge').innerText = cart.length;
+            document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
+                <div class="flex gap-4 items-center border-b border-white/5 pb-4">
+                    <img src="${item.img}" class="w-12 h-12 object-contain">
+                    <div class="flex-grow"><p class="text-[10px]">${item.name} (${item.size})</p><p class="text-rose-gold text-[10px]">${item.price} EGP</p></div>
+                    <button onclick="cart.splice(${i},1);updateCart();" class="opacity-20"><i data-lucide="trash"></i></button>
+                </div>
+            `).join('');
+            document.getElementById('cart-total').innerText = cart.reduce((a,b)=>a+b.price,0) + " EGP";
+            lucide.createIcons();
+        }
+
+        function toggleCart() { document.getElementById('cart-drawer').classList.toggle('translate-x-full'); }
+        function filterG(g) { renderProducts(g==='All'?inventory:inventory.filter(x=>x.gender===g)); }
+
+        renderProducts(inventory);
+        lucide.createIcons();
+    </script>
 </body>
 </html>
+
