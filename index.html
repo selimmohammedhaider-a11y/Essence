@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECCENCE | High-Value Fragrance Specialist</title>
+    <title>ECCENCE | Fragrance Specialist</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@100;300;600&display=swap" rel="stylesheet">
@@ -12,8 +12,8 @@
         body { background-color: var(--deep-burgundy); color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
         .luxury-font { font-family: 'Cormorant Garamond', serif; }
         
-        /* VIDEO SHUFFLER ENGINE */
-        .video-wrapper { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; opacity: 0.45; }
+        /* VIDEO SHUFFLER */
+        .video-wrapper { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; opacity: 0.4; }
         .hero-vid { position: absolute; width: 100%; height: 100%; object-fit: cover; transition: opacity 2s ease; opacity: 0; }
         .hero-vid.active { opacity: 1; }
 
@@ -21,9 +21,7 @@
         .active-section { display: block; animation: fadeIn 1.2s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* OVERLAY SENSE: CLICK OUTSIDE TO CLOSE */
-        .overlay-bg { background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); }
-        
+        /* CARDS */
         .glass-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -32,10 +30,13 @@
         }
         .glass-card:hover { border-color: var(--rose-gold); transform: translateY(-8px); background: rgba(255,255,255,0.05); }
 
-        .quiz-option { border: 1px solid rgba(255,255,255,0.1); padding: 18px; cursor: pointer; transition: 0.3s; text-align: center; text-transform: uppercase; font-size: 10px; letter-spacing: 3px; }
-        .quiz-option:hover { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(229,176,163,0.05); }
-        
+        /* OVERLAYS */
+        .overlay-bg { background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); }
         .presence-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 10px #4ade80; }
+        
+        /* BUTTONS */
+        .btn-action { border: 1px solid var(--rose-gold); color: var(--rose-gold); text-transform: uppercase; letter-spacing: 3px; font-size: 10px; transition: 0.4s; }
+        .btn-action:hover { background: var(--rose-gold); color: black; }
     </style>
 </head>
 <body>
@@ -43,8 +44,9 @@
     <nav class="fixed w-full z-[100] border-b border-white/5 px-8 py-6 flex justify-between items-center bg-[#1a0101]/90 backdrop-blur-xl">
         <h1 class="luxury-font text-3xl tracking-[0.5em] cursor-pointer" onclick="navTo('home')">ECCENCE</h1>
         <div class="flex items-center gap-8">
-            <button onclick="openQuiz()" class="text-[9px] border border-rose-gold/30 px-5 py-2 uppercase tracking-[0.3em] hover:bg-rose-gold hover:text-black transition">Find Scent</button>
-            <div class="relative cursor-pointer text-rose-gold" onclick="toggleCart(event)">
+            <button onclick="navTo('vault')" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition">The Vault</button>
+            <button onclick="openQuiz()" class="text-[9px] border border-rose-gold/30 px-4 py-2 uppercase tracking-[0.2em] hover:bg-rose-gold transition">Find Scent</button>
+            <div class="relative cursor-pointer text-rose-gold" onclick="toggleCart()">
                 <i data-lucide="shopping-bag" class="w-5 h-5"></i>
                 <span id="cart-badge" class="absolute -top-3 -right-3 bg-white text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
             </div>
@@ -52,61 +54,48 @@
     </nav>
 
     <section id="home-section" class="page-section active-section flex items-center justify-center">
-        <div class="video-wrapper" id="vid-shuffler">
+        <div class="video-wrapper">
             <video src="Diorhomevid.mp4" class="hero-vid active" autoplay muted loop></video>
             <video src="CocoChanelvid.mp4" class="hero-vid" autoplay muted loop></video>
         </div>
-        
-        <div class="relative z-10 text-center space-y-8 px-6">
-            <div class="text-[9px] uppercase tracking-[0.5em] opacity-60 reveal">
-                <span class="presence-dot"></span> <span id="presence-count">18</span> Specialists Active
+        <div class="relative z-10 text-center space-y-8">
+            <div class="text-[9px] uppercase tracking-[0.5em] opacity-60">
+                <span class="presence-dot"></span> <span id="presence-count">24</span> Specialists Active
             </div>
-            <h2 class="luxury-font text-7xl md:text-9xl italic leading-tight reveal" style="animation-delay: 0.2s">Presence Is <br> Everything</h2>
-            <div class="reveal" style="animation-delay: 0.4s">
-                <button onclick="navTo('vault')" class="px-14 py-6 border border-rose-gold text-rose-gold uppercase tracking-[0.6em] text-[10px] hover:bg-rose-gold hover:text-black transition-all duration-1000">
-                    Open The Vault
-                </button>
-            </div>
+            <h2 class="luxury-font text-8xl md:text-9xl italic leading-tight">Authentic <br> Presence</h2>
+            <button onclick="navTo('vault')" class="px-14 py-5 btn-action mt-8">Open Archive</button>
         </div>
     </section>
 
     <section id="vault-section" class="page-section pt-40 pb-20 px-8">
-        <div class="mb-16">
-            <h2 class="luxury-font text-7xl italic">The Archive</h2>
-            <div class="flex gap-8 mt-6 text-[9px] uppercase tracking-widest opacity-40">
-                <button onclick="filterG('All')" class="hover:text-rose-gold">All</button>
-                <button onclick="filterG('Men')" class="hover:text-rose-gold">Men</button>
-                <button onclick="filterG('Women')" class="hover:text-rose-gold">Women</button>
+        <div class="mb-16 flex flex-col md:flex-row justify-between items-end gap-6">
+            <div>
+                <h2 class="luxury-font text-7xl italic">The Archive</h2>
+                <p class="text-[10px] opacity-30 uppercase tracking-[0.3em] mt-2">Curation of 100% Original Scent Assets</p>
+            </div>
+            <div class="flex gap-8 text-[9px] uppercase tracking-widest opacity-40 border-b border-white/5 pb-2">
+                <button onclick="filterG('All')">All</button>
+                <button onclick="filterG('Men')">Men</button>
+                <button onclick="filterG('Women')">Women</button>
+                <button onclick="filterG('Niche')">Niche</button>
             </div>
         </div>
         <div id="product-grid" class="grid grid-cols-1 md:grid-cols-4 gap-8"></div>
     </section>
 
-    <div id="quiz-modal" class="fixed inset-0 z-[500] hidden flex items-center justify-center overlay-bg p-6" onclick="closeQuiz()">
-        <div class="max-w-xl w-full space-y-12" onclick="event.stopPropagation()">
-            <div class="text-center">
-                <p id="quiz-step-text" class="text-rose-gold text-[9px] tracking-[0.5em] uppercase mb-4">Step 1</p>
-                <h3 id="quiz-q" class="luxury-font text-5xl italic">Define your aura?</h3>
-            </div>
-            <div id="quiz-options" class="grid grid-cols-1 gap-4"></div>
-        </div>
-    </div>
-
-    <div id="p-modal" class="fixed inset-0 z-[400] hidden flex items-center justify-center overlay-bg p-6" onclick="this.classList.add('hidden')">
+    <div id="p-modal" class="fixed inset-0 z-[500] hidden flex items-center justify-center overlay-bg p-6" onclick="closeP()">
         <div class="bg-[#0d0101] border border-white/10 p-10 max-w-5xl w-full flex flex-col md:flex-row gap-12" onclick="event.stopPropagation()">
             <div class="w-full md:w-1/2 bg-white/5 p-8 flex items-center justify-center">
-                <img id="m-img" src="" class="max-h-[400px] object-contain drop-shadow-2xl">
+                <img id="m-img" src="" class="max-h-[400px] object-contain">
             </div>
             <div class="w-full md:w-1/2 space-y-8">
-                <div>
-                    <h3 id="m-name" class="luxury-font text-5xl italic mb-4"></h3>
-                    <div class="flex items-baseline gap-4">
-                        <span id="m-price" class="text-3xl text-rose-gold"></span>
-                        <span id="m-old" class="text-lg opacity-30 line-through"></span>
-                    </div>
+                <h3 id="m-name" class="luxury-font text-5xl italic"></h3>
+                <div class="flex items-baseline gap-4">
+                    <span id="m-price" class="text-3xl text-rose-gold"></span>
+                    <span id="m-old" class="text-lg opacity-30 line-through"></span>
                 </div>
-                <div id="m-variants-section" class="space-y-4">
-                    <p class="text-[8px] uppercase tracking-widest opacity-30">Selection</p>
+                <div id="m-variants-section">
+                    <p class="text-[8px] uppercase tracking-widest opacity-30 mb-4">Selection</p>
                     <div id="m-variants" class="flex gap-3"></div>
                 </div>
                 <button onclick="confirmAdd()" class="w-full py-6 bg-white text-black uppercase text-[11px] tracking-widest font-bold hover:bg-rose-gold transition">Acquire Asset</button>
@@ -114,110 +103,108 @@
         </div>
     </div>
 
+    <div id="quiz-modal" class="fixed inset-0 z-[600] hidden flex items-center justify-center overlay-bg p-6" onclick="closeQuiz()">
+        <div class="max-w-xl w-full space-y-12 text-center" onclick="event.stopPropagation()">
+            <h3 id="quiz-q" class="luxury-font text-5xl italic">Choose your vibe?</h3>
+            <div id="quiz-options" class="grid grid-cols-1 gap-4"></div>
+        </div>
+    </div>
+
     <script>
-        // VIDEO SHUFFLER ENGINE
-        let vIndex = 0;
-        const vids = document.querySelectorAll('.hero-vid');
-        setInterval(() => {
-            vids[vIndex].classList.remove('active');
-            vIndex = (vIndex + 1) % vids.length;
-            vids[vIndex].classList.add('active');
-        }, 6000);
-
-        // PRESENCE COUNTER
-        setInterval(() => {
-            const el = document.getElementById('presence-count');
-            let val = parseInt(el.innerText);
-            el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
-        }, 4000);
-
-        // INVENTORY (Prices set to your 700-1200 EGP + YSL Rules)
+        // MASTER INVENTORY: Every image mentioned integrated
         const inventory = [
+            // YSL SPECIALS (Locked Pricing)
             { id: 1, name: "YSL MYSLF", gender: "Men", file: "MYSLF Le Parfum - Men's Spicy Vanilla Fragrance - YSL Beauty.jpg", variants: [{s:"60ml", p:1000, o:1400},{s:"100ml", p:1400, o:1900}] },
             { id: 2, name: "YSL Y EDP", gender: "Men", file: "Ysl.JPG", variants: [{s:"100ml", p:1200, o:1650},{s:"200ml", p:2100, o:2800}] },
-            { id: 3, name: "Dior Sauvage", gender: "Men", file: "download (4).jpg", price: 1150, old: 1600 },
-            { id: 4, name: "Dark Verse", gender: "Women", file: "Luna Caine ✩ Dark Verse.webp", price: 1180, old: 1600 },
-            { id: 5, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 850, old: 1100 },
-            { id: 6, name: "LV Imagination", gender: "Men", file: "LouisVuittonimagination.JPG", price: 4800, old: 5800 },
-            { id: 7, name: "Born In Roma", gender: "Women", file: "valnteino born in rome intense wommen.jpg", price: 1200, old: 1750 },
-            { id: 8, name: "Cookie Crave", gender: "Women", file: "Lattafa Give Me Gourmand Cookie Crave Eau de Parfum Unisexe 75 ml.jpg", price: 720, old: 1000 }
+            
+            // MEN (700-1200 Range)
+            { id: 3, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 850, old: 1100 },
+            { id: 4, name: "Asad Bourbon", gender: "Men", file: "Lattafa Asad Bourbon Mens Perfume.jpg", price: 900, old: 1250 },
+            { id: 5, name: "His Confession", gender: "Men", file: "Lattafa His Confession for Men Eau de Parfum Spray, 3_4 Ounce _ 100 Ml.jpg", price: 780, old: 1050 },
+            { id: 6, name: "Dior Homme", gender: "Men", file: "Diorhome.JPG", price: 1100, old: 1550 },
+            { id: 7, name: "JPG Le Male", gender: "Men", file: "jpgmale.jpg", price: 950, old: 1300 },
+            
+            // WOMEN (700-1200 Range)
+            { id: 8, name: "Dark Verse", gender: "Women", file: "Luna Caine ✩ Dark Verse.webp", price: 1180, old: 1650 },
+            { id: 9, name: "JPG Divine", gender: "Women", file: "jpgwommen.webp", price: 1100, old: 1500 },
+            { id: 10, name: "Black Opium", gender: "Women", file: "Yves Saint Laurent - $150_00.webp", price: 1200, old: 1700 },
+            { id: 11, name: "Her Confession", gender: "Women", file: "Lattafa Her Confession - Vanilla, Floral, Amber, Musk - Eau de Parfum Long-Lasting Fragrance for Women, 3_40 Ounce _ 100 ml.jpg", price: 820, old: 1100 },
+            { id: 12, name: "Cookie Crave", gender: "Women", file: "Lattafa Give Me Gourmand Cookie Crave Eau de Parfum Unisexe 75 ml.jpg", price: 720, old: 980 },
+            { id: 13, name: "Khamrah", gender: "Women", file: "lattffchoclete.webp", price: 890, old: 1200 },
+            { id: 14, name: "Born In Roma", gender: "Women", file: "valnteino born in rome intense wommen.jpg", price: 1200, old: 1750 },
+            { id: 15, name: "Libre Intense", gender: "Women", file: "Libre Eau de Parfum Intense Women's Perfume _ YSL Beauty.webp", price: 1200, old: 1800 },
+
+            // NICHE (High End)
+            { id: 16, name: "LV Imagination", gender: "Niche", file: "LouisVuittonimagination.JPG", price: 4800, old: 5800 },
+            { id: 17, name: "LV Pacific Chill", gender: "Niche", file: "LouisVuittonPacificchill.JPG", price: 4800, old: 5800 },
+            { id: 18, name: "PDM Althair", gender: "Niche", file: "Pdmalthiar.JPG", price: 4500, old: 5500 },
+            { id: 19, name: "God of Fire", gender: "Niche", file: "Stephane Humbert Lucas God of Fire Eau de Parfum (50ml).jpg", price: 5200, old: 6500 },
+            { id: 20, name: "Naxos", gender: "Niche", file: "Scent Split.jpg", price: 4400, old: 5400 },
+            { id: 21, name: "Erba Pura", gender: "Niche", file: "Xerjoff Erba Pura 0_06 Fl Oz Vial Spray Sealed.jpg", price: 4600, old: 5600 },
+            { id: 22, name: "Delina Exclusif", gender: "Niche", file: "pdm dalida.webp", price: 4900, old: 6200 }
         ];
 
-        // RENDER
-        function renderProducts(list) {
-            document.getElementById('product-grid').innerHTML = list.map(p => `
-                <div class="glass-card p-10 flex flex-col items-center text-center reveal" onclick="openP(${p.id})">
-                    <img src="${p.file}" class="h-56 object-contain mb-8 transition-transform duration-700 hover:scale-110">
-                    <h4 class="luxury-font text-2xl italic">${p.name}</h4>
-                    <p class="text-rose-gold text-sm mt-3">${p.variants ? p.variants[0].p : p.price} EGP</p>
-                </div>
-            `).join('');
-        }
-
-        let currP = null;
-        let currV = null;
-        function openP(id) {
-            currP = inventory.find(x => x.id === id);
-            currV = currP.variants ? currP.variants[0] : {s:'Std', p:currP.price, o:currP.old};
-            document.getElementById('m-img').src = currP.file;
-            document.getElementById('m-name').innerText = currP.name;
-            updateUI();
-            
-            const vSection = document.getElementById('m-variants');
-            if(currP.variants) {
-                document.getElementById('m-variants-section').style.display='block';
-                vSection.innerHTML = currP.variants.map(v => `<button onclick="setV('${v.s}',${v.p},${v.o},this)" class="variant-btn ${v.s===currV.s?'active':''} border border-white/10 px-4 py-2 text-[10px]">${v.s}</button>`).join('');
-            } else { document.getElementById('m-variants-section').style.display='none'; }
-            
-            document.getElementById('p-modal').classList.remove('hidden');
-        }
-
-        function setV(s,p,o,btn) {
-            currV = {s,p,o};
-            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('text-rose-gold'));
-            btn.classList.add('text-rose-gold');
-            updateUI();
-        }
-
-        function updateUI() {
-            document.getElementById('m-price').innerText = currV.p + " EGP";
-            document.getElementById('m-old').innerText = currV.o + " EGP";
-        }
-
-        // QUIZ LOGIC
-        const quiz = [
-            { q: "Choose your mood", options: ["Cold & Fresh", "Warm & Spicy", "Sweet & Floral"] },
-            { q: "Occasion?", options: ["Late Night", "Professional", "Daily Grind"] }
-        ];
-        function openQuiz() { document.getElementById('quiz-modal').classList.remove('hidden'); showQ(0); }
-        function closeQuiz() { document.getElementById('quiz-modal').classList.add('hidden'); }
-        function showQ(step) {
-            document.getElementById('quiz-q').innerText = quiz[step].q;
-            document.getElementById('quiz-step-text').innerText = `Step ${step + 1}`;
-            document.getElementById('quiz-options').innerHTML = quiz[step].options.map(o => 
-                `<div class="quiz-option" onclick="${step===1 ? 'finishQuiz()' : 'showQ(1)'}">${o}</div>`
-            ).join('');
-        }
-        function finishQuiz() { closeQuiz(); navTo('vault'); }
-
+        // LOGIC: NAV
         function navTo(s) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-section'));
             document.getElementById(s + '-section').classList.add('active-section');
             window.scrollTo(0,0);
         }
 
-        let cart = [];
-        function confirmAdd() {
-            cart.push({...currP, price: currV.p});
-            document.getElementById('cart-badge').innerText = cart.length;
-            document.getElementById('p-modal').classList.add('hidden');
+        // LOGIC: RENDER
+        function renderProducts(list) {
+            document.getElementById('product-grid').innerHTML = list.map(p => `
+                <div class="glass-card p-10 flex flex-col items-center text-center" onclick="openP(${p.id})">
+                    <img src="${p.file}" class="h-56 object-contain mb-8">
+                    <h4 class="luxury-font text-2xl italic tracking-wide">${p.name}</h4>
+                    <p class="text-rose-gold text-sm mt-3">${p.variants ? p.variants[0].p : p.price} EGP</p>
+                </div>
+            `).join('');
         }
 
-        function filterG(g) { renderProducts(g === 'All' ? inventory : inventory.filter(p => p.gender === g)); }
+        // LOGIC: MODAL & CLICK OUTSIDE
+        let currP, currV;
+        function openP(id) {
+            currP = inventory.find(x => x.id === id);
+            currV = currP.variants ? currP.variants[0] : {s:'Std', p:currP.price, o:currP.old};
+            document.getElementById('m-img').src = currP.file;
+            document.getElementById('m-name').innerText = currP.name;
+            updateModalUI();
+            
+            const vDiv = document.getElementById('m-variants');
+            if(currP.variants) {
+                document.getElementById('m-variants-section').style.display = 'block';
+                vDiv.innerHTML = currP.variants.map(v => `<button onclick="setV('${v.s}',${v.p},${v.o},this)" class="px-4 py-2 border border-white/10 text-[10px] ${v.s===currV.s?'text-rose-gold border-rose-gold':''}">${v.s}</button>`).join('');
+            } else { document.getElementById('m-variants-section').style.display = 'none'; }
+            
+            document.getElementById('p-modal').classList.remove('hidden');
+        }
 
+        function closeP() { document.getElementById('p-modal').classList.add('hidden'); }
+        function setV(s,p,o,btn) {
+            currV = {s,p,o};
+            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('text-rose-gold','border-rose-gold'));
+            btn.classList.add('text-rose-gold','border-rose-gold');
+            updateModalUI();
+        }
+        function updateModalUI() {
+            document.getElementById('m-price').innerText = currV.p + " EGP";
+            document.getElementById('m-old').innerText = currV.o + " EGP";
+        }
+
+        // VIDEO SHUFFLER
+        let vIndex = 0;
+        const vids = document.querySelectorAll('.hero-vid');
+        setInterval(() => {
+            vids[vIndex].classList.remove('active');
+            vIndex = (vIndex + 1) % vids.length;
+            vids[vIndex].classList.add('active');
+        }, 5000);
+
+        // INITIALIZE
         renderProducts(inventory);
+        function filterG(g) { renderProducts(g==='All' ? inventory : inventory.filter(p=>p.gender===g)); }
         lucide.createIcons();
     </script>
 </body>
-    </html>
-
+</html>
